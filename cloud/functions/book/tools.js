@@ -38,8 +38,19 @@ const booksRecentChapter = function (body) {
  * @param {*} body 
  */
 const booksDetail = function (body) {
-    let $ = cheerio.load(body);
-    return $('#content').text()
+    let $ = cheerio.load(body),
+        list = [],
+        length = $("#content").contents().length;
+
+    $('#content').contents().filter((i, item) => {
+        if (i === 0 || (i === length - 1)) {
+            return
+        }
+        if (item.data) {
+            list.push(item.data)
+        }
+    })
+    return list
 }
 
 /**

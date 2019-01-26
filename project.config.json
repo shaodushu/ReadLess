@@ -12,5 +12,32 @@
 	},
 	"compileType": "miniprogram",
 	"cloudfunctionRoot": "cloud/functions/",
-	"condition": {}
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": 0,
+			"list": [
+				{
+					"id": -1,
+					"name": "章节详情",
+					"pathName": "pages/index/detail",
+					"query": "url=https://www.qu.la/book/746/10635319.html&__preload_=15485072851183&__key_=15485072851184"
+				}
+			]
+		}
+	}
 }

@@ -6,7 +6,7 @@ export default class Detail extends Component {
 		navigationBarTitleText: '详情'
 	};
 	state = {
-		content: ''
+		content: []
 	};
 	componentWillMount() {
 		this.$preloadData.then((content) => {
@@ -31,7 +31,11 @@ export default class Detail extends Component {
 				<View className="at-article__info">2017-05-07&nbsp;&nbsp;&nbsp;这是作者</View> */}
 				<View className="at-article__content">
 					<View className="at-article__section">
-						<View className="at-article__p">{content}</View>
+						{content.map((item, i) => (
+							<View className="at-article__p" key={i}>
+								{item}
+							</View>
+						))}
 					</View>
 				</View>
 			</View>
