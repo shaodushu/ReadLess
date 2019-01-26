@@ -1,0 +1,16 @@
+{
+	"miniprogramRoot": "client/dist/",
+	"projectname": "ReadLess",
+	"description": "少读书",
+	"appid": "wxde57f96494c9231d",
+	"setting": {
+		"urlCheck": true,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"cloudfunctionRoot": "cloud/functions/",
+	"condition": {}
+}
