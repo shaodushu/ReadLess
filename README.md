@@ -1,6 +1,5 @@
 # ReadLess
 
-[![NPM][npm-version-image]][npm-version-url] [![david-dm][david-dm-image]][david-dm-url]
 
 ### 开发环境
 >node以及npm包管理器
