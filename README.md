@@ -14,3 +14,10 @@
 >云开发为开发者提供完整的云端支持，弱化后端和运维概念，无需搭建服务器，使用平台提供的 API 进行核心业务开发，即可实现快速上线和迭代，同时这一能力，同开发者已经使用的云服务相互兼容，并不互斥。
 
 ### [微信开发者工具]("https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html")
+
+### 关于Python 
+```
+npm --add-python-to-path='true' --debug install --global windows-build-tools
+```
+
+> [相关文章]("https://github.com/felixrieseberg/windows-build-tools/issues/56")
