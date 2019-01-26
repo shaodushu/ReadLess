@@ -7,9 +7,7 @@ import Taro from '@tarojs/taro';
  */
 const fly = (name, url, data = {}) => {
   return new Promise((resolve, reject) => {
-    Taro.showLoading({
-      title: '加载中...'
-    })
+
     wx.cloud
       .callFunction({
         name: name,
@@ -19,7 +17,6 @@ const fly = (name, url, data = {}) => {
         }
       })
       .then((res) => {
-        Taro.hideLoading()
         console.log(res)
         Taro.showToast({
           title: res.result.msg,
@@ -30,8 +27,6 @@ const fly = (name, url, data = {}) => {
         resolve(res.result.data);
       })
       .catch(err => {
-        console.log(err)
-        Taro.hideLoading()
         Taro.showToast({
           title: err.result.msg,
           icon: 'none',

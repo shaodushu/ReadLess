@@ -37,12 +37,16 @@ export default class Index extends Component {
 	async startSearch() {
 		try {
 			const { title } = this.state;
+			Taro.showLoading({
+				title: '加载中...'
+			});
 			const list = await search(title);
+			Taro.hideLoading();
 			this.setState({
 				list
 			});
 		} catch (error) {
-			console.log(error);
+			Taro.hideLoading();
 		}
 	}
 	goChapter(url) {
