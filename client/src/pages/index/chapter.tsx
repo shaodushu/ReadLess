@@ -10,7 +10,7 @@ export default class Chapter extends Component {
 	};
 	state = {
 		bookUrl: '', //最新章节解析需要书籍链接
-		current: 1,
+		current: 0,
 		list: []
 	};
 	componentWillMount() {
