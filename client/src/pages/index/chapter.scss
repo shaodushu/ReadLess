@@ -1,0 +1,9 @@
+.chapter {
+  height: 100vh;
+
+  &-list {
+    height: 93vh;
+    width: 100%;
+    overflow: scroll
+  }
+}

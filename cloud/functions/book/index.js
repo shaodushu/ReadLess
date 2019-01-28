@@ -6,10 +6,12 @@ cloud.init()
 const api = require('./api')
 const tools = require('./tools')
 
-//  1.检索书籍
-//  2.获取书本基本信息
-//  3.获取书本目录
-//  4.获取书本详情
+//  1. 检索书籍
+//  2. 获取书本基本信息
+//  3. 获取书本目录
+//  3.1 最近更新
+//  3.2 全部章节
+//  4. 获取书本详情
 
 
 // 云函数入口函数
@@ -47,6 +49,25 @@ exports.main = async (event, context) => {
         code: 200,
         msg: `最近更新章节`,
         data: tools.booksRecentChapter(result.text)
+      }
+    } catch (err) {
+      return ctx.body = {
+        code: 500,
+        msg: 'err:' + err
+      }
+    }
+  });
+
+  app.router('allChapter', async (ctx) => {
+    try {
+      const {
+        url
+      } = ctx._req.event
+      const result = await api.allChapter(url)
+      return ctx.body = {
+        code: 200,
+        msg: `全部章节`,
+        data: tools.booksAllChapter(result.text)
       }
     } catch (err) {
       return ctx.body = {

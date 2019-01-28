@@ -34,6 +34,22 @@ const booksRecentChapter = function (body) {
 }
 
 /**
+ * 小说全部目录目录
+ * @param {*} body 
+ */
+const booksAllChapter = function (body) {
+    let $ = cheerio.load(body),
+        list = [];
+    $('#list dl dt').eq(2).nextAll().find('a').each(function (i, e) {
+        list.push({
+            title: Trim($(e).text(), 'g'),
+            url: $(e).attr('href')
+        })
+    });
+    return list
+}
+
+/**
  * 小说详情
  * @param {*} body 
  */
@@ -72,5 +88,6 @@ const Trim = function (str, is_global) {
 module.exports = {
     booksList,
     booksRecentChapter,
+    booksAllChapter,
     booksDetail
 }

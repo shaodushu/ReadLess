@@ -60,6 +60,7 @@ export default class Index extends Component {
 					value={title}
 					onChange={this.onChange.bind(this)}
 					onActionClick={this.startSearch.bind(this)}
+					onConfirm={this.startSearch.bind(this)}
 				/>
 				<ScrollView scrollY className="book-list">
 					<AtList>
@@ -68,7 +69,6 @@ export default class Index extends Component {
 								key={i}
 								title={item.title}
 								arrow="right"
-								extraText="最新章节"
 								onClick={this.goChapter.bind(this, item.url)}
 							/>
 						))}

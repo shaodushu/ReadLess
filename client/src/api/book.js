@@ -21,6 +21,16 @@ export const recentUpdate = (url) => {
 }
 
 /**
+ * 全部章节
+ * @param {*} url 
+ */
+export const allChapter = (url) => {
+  return fly('book', 'allChapter', {
+    url
+  })
+}
+
+/**
  * 书籍详情
  * @param {*} url 
  */

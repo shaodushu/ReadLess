@@ -18,15 +18,10 @@ const fly = (name, url, data = {}) => {
       })
       .then((res) => {
         console.log(res)
-        Taro.showToast({
-          title: res.result.msg,
-          icon: 'none',
-          mask: true,
-          duration: 1500
-        })
         resolve(res.result.data);
       })
       .catch(err => {
+        console.log(err)
         Taro.showToast({
           title: err.result.msg,
           icon: 'none',

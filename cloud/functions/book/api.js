@@ -15,7 +15,13 @@ const search = (title) => {
 const recentUpdate = (url) => {
     return fly(url)
 }
-
+/**
+ * 全部章节
+ * @param {String} url 
+ */
+const allChapter = (url) => {
+    return fly(url)
+}
 /**
  * 书籍内容
  * @param {String} url 
@@ -27,5 +33,6 @@ const searchDetail = (url) => {
 module.exports = {
     search,
     recentUpdate,
+    allChapter,
     searchDetail
 }

@@ -1,6 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { detail } from '../../api/book';
+
+import './detail.scss';
 export default class Detail extends Component {
 	config: Config = {
 		navigationBarTitleText: '详情'
