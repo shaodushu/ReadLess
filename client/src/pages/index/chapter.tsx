@@ -14,11 +14,19 @@ export default class Chapter extends Component {
 		list: []
 	};
 	componentWillMount() {
-		this.$preloadData.then((list) => {
-			this.setState({
-				list
-			});
+		Taro.showLoading({
+			title: '加载中...'
 		});
+		this.$preloadData
+			.then((list) => {
+				Taro.hideLoading();
+				this.setState({
+					list
+				});
+			})
+			.catch(() => {
+				Taro.hideLoading();
+			});
 	}
 	componentWillPreload(params) {
 		this.setState({

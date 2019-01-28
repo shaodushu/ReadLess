@@ -11,11 +11,19 @@ export default class Detail extends Component {
 		content: []
 	};
 	componentWillMount() {
-		this.$preloadData.then((content) => {
-			this.setState({
-				content
-			});
+		Taro.showLoading({
+			title: '加载中...'
 		});
+		this.$preloadData
+			.then((content) => {
+				Taro.hideLoading();
+				this.setState({
+					content
+				});
+			})
+			.catch(() => {
+				Taro.hideLoading();
+			});
 	}
 	componentWillPreload(params) {
 		return this.getDetail(params.url);
