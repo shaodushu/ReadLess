@@ -1,0 +1,13 @@
+{
+	"name": "ReadLess",
+	"version": "0.0.1",
+	"private": true,
+	"description": "少读书",
+	"scripts": {
+		"dev": "dev.sh"
+	},
+	"author": "",
+	"license": "MIT",
+	"dependencies": {},
+	"devDependencies": {}
+}
