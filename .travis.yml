@@ -2,5 +2,8 @@ os: windows
 sudo: required
 language: node_js
 node_js:
-  - '8'
-script: .\build.sh
+  - '10'
+cache:
+  directories:
+    - node_modules
+script: source build.sh
