@@ -6,4 +6,10 @@ node_js:
 cache:
   directories:
     - node_modules
-script: source build.sh
+jobs:
+  include:
+    - stage: dev
+      install:
+        - npm install
+      script:
+        - source build.sh
