@@ -9,7 +9,5 @@ cache:
 jobs:
   include:
     - stage: dev
-      install:
-        - npm install
       script:
         - source build.sh
