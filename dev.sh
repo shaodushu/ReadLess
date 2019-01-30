@@ -1,6 +1,7 @@
+#初始化安装启动
 STRING="HELLO ReadLess"
 echo $STRING
- npm --add-python-to-path='true' --debug install --global windows-build-tools
+ npm install --global --production windows-build-tools
 
  npm install -g @tarojs/cli
 
