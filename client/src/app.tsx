@@ -18,13 +18,31 @@ class App extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
 	config: Config = {
-		pages: [ 'pages/index/index', 'pages/index/chapter', 'pages/index/detail' ],
+		pages: [ 'pages/index/index', 'pages/index/chapter', 'pages/index/detail', 'pages/mine/mine' ],
 		cloud: true,
 		window: {
 			backgroundTextStyle: 'light',
 			navigationBarBackgroundColor: '#fff',
-			navigationBarTitleText: 'WeChat',
+			navigationBarTitleText: 'ReadLess',
 			navigationBarTextStyle: 'black'
+		},
+		tabBar: {
+			color: '#333',
+			selectedColor: '#00adb5',
+			list: [
+				{
+					pagePath: 'pages/index/index',
+					text: '首页',
+					iconPath: './asset/home.png',
+					selectedIconPath: './asset/home-fill.png'
+				},
+				{
+					pagePath: 'pages/mine/mine',
+					text: '记录',
+					iconPath: './asset/detail.png',
+					selectedIconPath: './asset/detail-fill.png'
+				}
+			]
 		}
 	};
 

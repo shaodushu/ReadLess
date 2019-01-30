@@ -1,9 +1,10 @@
 import Taro, { Component, Config } from '@tarojs/taro';
-import { View, ScrollView } from '@tarojs/components';
-import { AtSearchBar, AtList, AtListItem } from 'taro-ui';
+import { View, ScrollView, Button } from '@tarojs/components';
+import { AtSearchBar, AtList, AtListItem, AtButton } from 'taro-ui';
 
 import './index.scss';
 import { search } from '../../api/book';
+import { user, register } from '../../api/user';
 
 export default class Index extends Component {
 	/**
@@ -52,6 +53,13 @@ export default class Index extends Component {
 	goChapter(url) {
 		Taro.navigateTo({ url: '/pages/index/chapter?url=' + url });
 	}
+	async getUserinfo(e) {
+		console.log(e);
+		try {
+			const userinfo = await register(e.detail.userInfo);
+			console.log(userinfo);
+		} catch (error) {}
+	}
 	render() {
 		const { title, list } = this.state;
 		return (
@@ -62,6 +70,9 @@ export default class Index extends Component {
 					onActionClick={this.startSearch.bind(this)}
 					onConfirm={this.startSearch.bind(this)}
 				/>
+				<AtButton open-type="getUserInfo" onGetUserInfo={this.getUserinfo.bind(this)}>
+					获取用户信息
+				</AtButton>
 				<ScrollView scrollY className="book-list">
 					<AtList>
 						{list.map((item: any, i) => (
