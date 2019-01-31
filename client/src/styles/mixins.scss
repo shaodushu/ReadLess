@@ -2,6 +2,7 @@
 $hd: 2; // 基本单位
 /* The Color of RZLT Brand 00adb5*/
 $color-brand: #00adb5;
+$color-white:#fff;
 /* Font */
 $font-size-xs: 10px * $hd !default; // 非常用字号，用于标签
 $font-size-sm: 12px * $hd !default; // 用于辅助信息
@@ -25,5 +26,5 @@ $color-border-base: #e8eaec;
 $border-radius-sm: 2px * $hd !default;
 $border-radius-md: 4px * $hd !default;
 $border-radius-lg: 6px * $hd !default;
-/* 引入 Taro UI 默认样式 */
-@import "~taro-ui/dist/style/index.scss";
+/* RD */
+$rd-shadow: 0 0 20px 4px rgba(17, 9, 5, .08);

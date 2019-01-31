@@ -1,11 +1,14 @@
 import Taro, { Component, Config } from '@tarojs/taro';
 import { View, ScrollView, Button } from '@tarojs/components';
-import { AtSearchBar, AtList, AtListItem, AtButton } from 'taro-ui';
+import { AtSearchBar, AtList, AtListItem, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui';
 
 import './index.scss';
 import { search } from '../../api/book';
-import { user, register } from '../../api/user';
+import { authorization } from '../../api/user';
+import { set as setGlobalData, get as getGlobalData } from '../../store/global_data';
+import checkAuth from '../../decorator/checkAuth';
 
+@checkAuth('willMount')
 export default class Index extends Component {
 	/**
    * 指定config的类型声明为: Taro.Config
@@ -19,9 +22,16 @@ export default class Index extends Component {
 	};
 	state = {
 		title: '',
-		list: []
+		list: [],
+		isOpened: false
 	};
-	componentWillMount() {}
+	componentWillMount() {
+		if (!getGlobalData('isAuth')) {
+			this.setState({
+				isOpened: true
+			});
+		}
+	}
 
 	componentDidMount() {}
 
@@ -54,14 +64,29 @@ export default class Index extends Component {
 		Taro.navigateTo({ url: '/pages/index/chapter?url=' + url });
 	}
 	async getUserinfo(e) {
-		console.log(e);
 		try {
-			const userinfo = await register(e.detail.userInfo);
-			console.log(userinfo);
+			if (e.detail.errMsg === 'getUserInfo:ok') {
+				Taro.showLoading({
+					title: '授权中...'
+				});
+				const userinfo = await authorization(e.detail.userInfo);
+				Taro.hideLoading();
+				setGlobalData('userinfo', userinfo);
+				setGlobalData('isLogin', true);
+				this.setState({
+					isOpened: false
+				});
+			} else {
+				Taro.showModal({
+					title: '提示',
+					content: '微信授权为微信官方提供,不会记录您的任何隐私信息',
+					showCancel: false
+				});
+			}
 		} catch (error) {}
 	}
 	render() {
-		const { title, list } = this.state;
+		const { title, list, isOpened } = this.state;
 		return (
 			<View className="index">
 				<AtSearchBar
@@ -70,9 +95,6 @@ export default class Index extends Component {
 					onActionClick={this.startSearch.bind(this)}
 					onConfirm={this.startSearch.bind(this)}
 				/>
-				<AtButton open-type="getUserInfo" onGetUserInfo={this.getUserinfo.bind(this)}>
-					获取用户信息
-				</AtButton>
 				<ScrollView scrollY className="book-list">
 					<AtList>
 						{list.map((item: any, i) => (
@@ -85,6 +107,20 @@ export default class Index extends Component {
 						))}
 					</AtList>
 				</ScrollView>
+				<AtModal isOpened={isOpened}>
+					<AtModalHeader>ReadLess</AtModalHeader>
+					<AtModalContent>
+						<View className="at-article">
+							<View className="at-article__h3">该程序获得以下授权：</View>
+							<View className="at-article__info">获取你的公开信息（昵称和头像等），以便你的更好的服务</View>
+						</View>
+					</AtModalContent>
+					<AtModalAction>
+						<Button openType="getUserInfo" onGetUserInfo={this.getUserinfo.bind(this)}>
+							授权
+						</Button>
+					</AtModalAction>
+				</AtModal>
 			</View>
 		);
 	}

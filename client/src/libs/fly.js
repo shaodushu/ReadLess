@@ -23,7 +23,7 @@ const fly = (name, url, data = {}) => {
       .catch(err => {
         console.log(err)
         Taro.showToast({
-          title: err.result.msg,
+          title: err.result ? err.result.msg : 'error',
           icon: 'none',
           mask: true,
           duration: 1500

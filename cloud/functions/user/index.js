@@ -1,8 +1,11 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
-const TcbRouter = require('tcb-router');
+const TcbRouter = require('tcb-router')
 
 cloud.init()
+const DB = cloud.database()
+const USER = DB.collection('user')
+const _ = DB.command
 // const api = require('./api')
 // const tools = require('./tools')
 
@@ -18,26 +21,26 @@ exports.main = async (event, context) => {
         UNIONID
     } = cloud.getWXContext()
 
-    // console.log(OPENID, APPID, UNIONID)
     const app = new TcbRouter({
         event
     });
 
-    app.router('register', async (ctx, next) => {
+    app.router('authorization', async (ctx, next) => {
         try {
             const {
                 userinfo
-            } = ctx._req.event
-            // const result = await api.search(title)
+            } = event
+            await USER.add({
+                data: {
+                    ...userinfo,
+                    openid: OPENID,
+                    readLog: []
+                }
+            })
             return ctx.body = {
                 code: 200,
-                msg: `用户注册`,
-                data: {
-                    userinfo,
-                    OPENID,
-                    APPID,
-                    UNIONID
-                }
+                msg: `AUTH_SUCCESS`,
+                data: userinfo
             }
         } catch (err) {
             return ctx.body = {
@@ -46,6 +49,49 @@ exports.main = async (event, context) => {
             }
         }
     });
-
+    app.router('getUserInfo', async (ctx, next) => {
+        try {
+            const res = await USER.where({
+                openid: OPENID
+            }).get()
+            return ctx.body = {
+                code: 200,
+                msg: `RD_USER_INFO`,
+                data: res.data[0]
+            }
+        } catch (err) {
+            return ctx.body = {
+                code: 500,
+                msg: 'err:' + err
+            }
+        }
+    });
+    app.router('recordLog', async (ctx, next) => {
+        try {
+            const {
+                url,
+                title
+            } = event
+            await USER.where({
+                openid: OPENID
+            }).update({
+                data: {
+                    readLog: _.push({
+                        url,
+                        title
+                    })
+                },
+            })
+            return ctx.body = {
+                code: 200,
+                msg: `RD_LOG_SUCCESS`
+            }
+        } catch (err) {
+            return ctx.body = {
+                code: 500,
+                msg: 'err:' + err
+            }
+        }
+    });
     return app.serve();
 }

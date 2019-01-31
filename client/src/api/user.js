@@ -1,31 +1,28 @@
 import fly from '../libs/fly'
 
-const db = wx.cloud.database()
-const USER = db.collection('user')
 /**
- * 用户注册
+ * 授权
  * @param {Object} userinfo 
  */
-export const register = (userinfo) => {
-  USER.add({
-    data: userinfo,
-    success(res) {
-      console.log(res)
-    },
-    fail(err){
-        console.log(err)
-    }
-  })
-  return fly('user', 'register', {
+export const authorization = (userinfo) => {
+  return fly('user', 'authorization', {
     userinfo
   })
 }
 /**
- * 用户登录
- * @param {*} title 
+ * 获取RD用户信息
  */
-export const login = (title) => {
-  return fly('user', 'login', {
+export const getUserInfo = () => {
+  return fly('user', 'getUserInfo')
+}
+/**
+ * 阅读记录
+ * @param {String} url 
+ * @param {String} title 
+ */
+export const recordLog = (url, title) => {
+  return fly('user', 'recordLog', {
+    url,
     title
   })
 }

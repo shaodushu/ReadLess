@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components';
 import { AtList, AtListItem, AtTabs, AtTabsPane } from 'taro-ui';
 import { recentUpdate, allChapter } from '../../api/book';
-
+import { recordLog } from '../../api/user';
 import './chapter.scss';
 export default class Chapter extends Component {
 	config: Config = {
@@ -39,9 +39,11 @@ export default class Chapter extends Component {
 			return [ await recentUpdate(url), await allChapter(url) ];
 		} catch (error) {}
 	}
-	goDetail(url) {
+	goDetail(url, title) {
 		const { bookUrl } = this.state;
-		Taro.navigateTo({ url: `/pages/index/detail?url=${bookUrl + url}` });
+		Taro.navigateTo({ url: `/pages/index/detail?url=${bookUrl + url}&title=${title}` });
+		//增加阅读记录
+		recordLog(bookUrl + url, title);
 	}
 	handleClick(value) {
 		this.setState({
@@ -63,7 +65,7 @@ export default class Chapter extends Component {
 											key={j}
 											title={item.title}
 											arrow="right"
-											onClick={this.goDetail.bind(this, item.url)}
+											onClick={this.goDetail.bind(this, item.url, item.title)}
 										/>
 									))}
 								</AtList>

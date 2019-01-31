@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro';
 import '@tarojs/async-await';
 import Index from './pages/index';
-import './app.scss';
+import './styles/base.scss';
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：

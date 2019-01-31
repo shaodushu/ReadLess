@@ -3,11 +3,16 @@ import { View } from '@tarojs/components';
 import { detail } from '../../api/book';
 
 import './detail.scss';
-export default class Detail extends Component {
+interface IState {
+	url: String | null;
+	content: any[];
+}
+export default class Detail extends Component<{}, IState> {
 	config: Config = {
 		navigationBarTitleText: '详情'
 	};
 	state = {
+		url: null,
 		content: []
 	};
 	componentWillMount() {
@@ -15,23 +20,46 @@ export default class Detail extends Component {
 			title: '加载中...'
 		});
 		this.$preloadData
-			.then((content) => {
+			.then((res) => {
+				const { title, content, url } = res;
+				console.log(url);
+				Taro.setNavigationBarTitle({
+					title
+				});
 				Taro.hideLoading();
 				this.setState({
-					content
+					content,
+					url
 				});
 			})
 			.catch(() => {
 				Taro.hideLoading();
 			});
 	}
-	componentWillPreload(params) {
-		return this.getDetail(params.url);
+	async componentWillPreload(params) {
+		return {
+			title: params.title,
+			url: params.url,
+			content: await detail(params.url)
+		};
 	}
-	async getDetail(url) {
-		try {
-			return await detail(url);
-		} catch (error) {}
+	async onReachBottom() {
+		//TODO 翻页简单处理，只针对全部章节,暂时不能获取小说章节,暂时不能解决页面文字过多
+		let { url, content } = this.state,
+			page,
+			list;
+		if (url) {
+			page = url.match('[^/]+(?!.*/)')[0].split('.')[0];
+			url = url.replace(page, (parseInt(page) + 1).toString());
+			Taro.showLoading({
+				title: '加载中...'
+			});
+			list = await detail(url);
+			Taro.hideLoading();
+			this.setState({
+				content: content.concat(list)
+			});
+		}
 	}
 	render() {
 		const { content } = this.state;

@@ -1,0 +1,72 @@
+@import '../../styles/mixins.scss';
+
+.mine {
+  .header {
+    margin-bottom: 60px;
+    height: 380px;
+    background-color: $color-brand;
+
+    .mine-desc {
+      display: flex;
+      padding: 40px 30px;
+      background-color: #fff;
+      box-sizing: border-box;
+      position: relative;
+      align-items: center;
+      margin: 0 24px;
+      border-radius: $border-radius-lg;
+      transform: translateY(230px);
+
+      .avator {
+        width: 106px;
+        height: 106px;
+        border-radius: 100%;
+        margin-right: 20px;
+      }
+    }
+
+    .mine-info {
+      flex: 1;
+      overflow: hidden;
+      padding-right: 30px;
+      box-sizing: border-box;
+      position: relative;
+
+      &_name {
+        font-weight: bold;
+        color: #131314;
+        margin-top: 10px;
+        font-size: 40px;
+        max-width: 440px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      &_address {
+        margin-top: 10px;
+        font-size: 24px;
+        color: #999;
+      }
+    }
+  }
+
+  .log-list {
+    padding: 40px 30px;
+
+    .log-item {
+      background: $color-white;
+      height: 50px;
+      padding: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: $border-radius-lg;
+
+      text {
+        font-size: $font-size-base;
+      }
+    }
+  }
+}

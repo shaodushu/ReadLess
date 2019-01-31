@@ -1,0 +1,9 @@
+@import './mixins.scss';
+/* 引入 Taro UI 默认样式 */
+@import "~taro-ui/dist/style/index.scss";
+
+page {
+  color: $color-text-base;
+  background-color: $color-bg-grey;
+  height: 100%;
+}
