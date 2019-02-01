@@ -54,10 +54,12 @@ exports.main = async (event, context) => {
             const res = await USER.where({
                 openid: OPENID
             }).get()
+            const userinfo = res.data[0]
+            userinfo.readLog.reverse()
             return ctx.body = {
                 code: 200,
                 msg: `RD_USER_INFO`,
-                data: res.data[0]
+                data: userinfo
             }
         } catch (err) {
             return ctx.body = {

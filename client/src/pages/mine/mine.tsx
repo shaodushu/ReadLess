@@ -56,7 +56,7 @@ export default class Mine extends Component {
 					</View>
 				</View>
 				<View className="log-list">
-					{userinfo.readLog.reverse().map((item: any, i) => (
+					{userinfo.readLog.map((item: any, i) => (
 						<View className="log-item" key={i} onClick={this.goDetail.bind(this, item)}>
 							<Text>{item.title}</Text>
 							<View className="at-icon at-icon-chevron-right" />
