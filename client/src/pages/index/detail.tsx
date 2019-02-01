@@ -53,8 +53,10 @@ export default class Detail extends Component<{}, IState> {
 			result,
 			title;
 		if (url) {
+			console.log(url);
 			page = url.match('[^/]+(?!.*/)')[0].split('.')[0];
 			url = url.replace(page, (parseInt(page) + 1).toString());
+			console.log(url);
 			Taro.showLoading({
 				title: '加载中...'
 			});
@@ -65,6 +67,7 @@ export default class Detail extends Component<{}, IState> {
 				title: title[title.length - 1]
 			});
 			this.setState({
+				url,
 				content: content.concat(result.content)
 			});
 			//增加阅读记录

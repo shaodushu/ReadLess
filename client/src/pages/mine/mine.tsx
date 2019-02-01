@@ -22,7 +22,7 @@ export default class Mine extends Component {
 			readLog: []
 		}
 	};
-	componentDidMount() {
+	componentDidShow() {
 		this.setState({
 			userinfo: getGlobalData('userinfo')
 		});
@@ -38,7 +38,7 @@ export default class Mine extends Component {
 		} catch (error) {}
 	}
 	goDetail(item) {
-		Taro.navigateTo({ url: `/pages/index/detail?url=${item.url}&title=${item.title}` });
+		Taro.navigateTo({ url: `/pages/index/detail?url=${item.url}` });
 	}
 	render() {
 		const { userinfo } = this.state;
