@@ -9,8 +9,8 @@ export default class Mine extends Component {
 	config: Config = {
 		navigationBarTitleText: '记录',
 		enablePullDownRefresh: true,
+		navigationBarBackgroundColor: '#00adb5',
 		navigationBarTextStyle: 'white',
-		navigationStyle: 'custom',
 		backgroundColor: '#333333',
 		backgroundTextStyle: 'light'
 	};
@@ -30,6 +30,7 @@ export default class Mine extends Component {
 	async onPullDownRefresh() {
 		try {
 			const userinfo = await getUserInfo();
+			Taro.stopPullDownRefresh();
 			setGlobalData('userinfo', userinfo);
 			this.setState({
 				userinfo
@@ -55,7 +56,7 @@ export default class Mine extends Component {
 					</View>
 				</View>
 				<View className="log-list">
-					{userinfo.readLog.map((item: any, i) => (
+					{userinfo.readLog.reverse().map((item: any, i) => (
 						<View className="log-item" key={i} onClick={this.goDetail.bind(this, item)}>
 							<Text>{item.title}</Text>
 							<View className="at-icon at-icon-chevron-right" />

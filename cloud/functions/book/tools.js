@@ -56,8 +56,11 @@ const booksAllChapter = function (body) {
 const booksDetail = function (body) {
     let $ = cheerio.load(body),
         list = [],
-        length = $("#content").contents().length;
-
+        length = $("#content").contents().length,
+        title;
+    //小说标题
+    title = $('.bookname h1').text()
+    //小说文本
     $('#content').contents().filter((i, item) => {
         if (i === 0 || (i === length - 1)) {
             return
@@ -66,7 +69,10 @@ const booksDetail = function (body) {
             list.push(item.data)
         }
     })
-    return list
+    return {
+        title,
+        content: list
+    }
 }
 
 /**
