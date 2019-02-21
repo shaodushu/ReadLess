@@ -1,58 +1,64 @@
 import Taro, { Component, Config } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components';
 import { AtList, AtListItem, AtTabs, AtTabsPane } from 'taro-ui';
-import { recentUpdate, allChapter } from '../../api/book';
-import { recordLog } from '../../api/user';
+import { connect } from '@tarojs/redux';
+
+import * as actions from '../../actions/book';
+import { dispatchRecordLog } from '../../actions/user';
 import './chapter.scss';
+
+@connect((state) => state.book, {
+	...actions,
+	dispatchRecordLog
+})
 export default class Chapter extends Component {
 	config: Config = {
 		navigationBarTitleText: '章节目录'
 	};
 	state = {
 		bookUrl: '', //最新章节解析需要书籍链接
-		current: 0,
-		recentList: [],
-		allList: []
+		current: 0
 	};
-	componentWillMount() {
+	async componentWillMount() {
 		Taro.showLoading({
 			title: '加载中...'
 		});
-		this.$preloadData
-			.then((recentList) => {
-				Taro.hideLoading();
-				this.setState({
-					recentList
-				});
-			})
-			.catch(() => {
-				Taro.hideLoading();
+		const { dispatchRecentUpdate } = this.props,
+			{ url } = this.$router.params;
+		try {
+			await dispatchRecentUpdate({
+				url
 			});
-	}
-	async componentWillPreload(params) {
-		this.setState({
-			bookUrl: params.url
-		});
-		return await recentUpdate(params.url);
+			Taro.hideLoading();
+			this.setState({
+				bookUrl: url
+			});
+		} catch (error) {
+			Taro.hideLoading();
+		}
 	}
 	goDetail(url, title) {
-		const { bookUrl } = this.state;
+		const { bookUrl } = this.state,
+			{ dispatchRecordLog } = this.props;
 		Taro.navigateTo({ url: `/pages/index/detail?url=${bookUrl + url}` });
 		//增加阅读记录
-		recordLog(bookUrl + url, title);
+		dispatchRecordLog({
+			url: bookUrl + url,
+			title
+		});
 	}
 	async handleClick(value) {
-		const { allList, bookUrl } = this.state;
-		if (value === 1 && allList.length === 0) {
+		const { bookUrl } = this.state,
+			{ allChapter, dispatchAllChapter } = this.props;
+		if (value === 1 && allChapter.length === 0) {
 			try {
 				Taro.showLoading({
 					title: '加载中...'
 				});
-				let list = await allChapter(bookUrl);
-				Taro.hideLoading();
-				this.setState({
-					allList: list
+				await dispatchAllChapter({
+					url: bookUrl
 				});
+				Taro.hideLoading();
 			} catch (error) {
 				Taro.hideLoading();
 			}
@@ -62,9 +68,10 @@ export default class Chapter extends Component {
 		});
 	}
 	render() {
-		const { recentList, allList, current } = this.state,
+		const { current } = this.state,
 			tabList = [ { title: '最新章节' }, { title: '全部章节' } ],
-			list = [ recentList, allList ];
+			{ recentChapter, allChapter } = this.props,
+			list = [ recentChapter, allChapter ];
 		return (
 			<View className="chapter">
 				<AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>

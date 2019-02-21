@@ -1,3 +1,5 @@
+const path = require('path')
+
 const config = {
   projectName: 'ReadLess',
   date: '2019-1-25',
@@ -22,13 +24,11 @@ const config = {
       ]
     }
   },
-  defineConstants: {
-  },
+  defineConstants: {},
+  alias: {},
   copy: {
-    patterns: [
-    ],
-    options: {
-    }
+    patterns: [],
+    options: {}
   },
   weapp: {
     module: {

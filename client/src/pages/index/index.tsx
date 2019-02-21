@@ -1,15 +1,23 @@
 import Taro, { Component, Config } from '@tarojs/taro';
 import { View, ScrollView, Button } from '@tarojs/components';
 import { AtSearchBar, AtList, AtListItem, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui';
+import { connect } from '@tarojs/redux';
 
+import * as actions from '../../actions/user';
+import { dispatchSearch } from '../../actions/book';
 import './index.scss';
-import { search } from '../../api/book';
-import { authorization } from '../../api/user';
-import { set as setGlobalData, get as getGlobalData } from '../../store/global_data';
 import checkAuth from '../../decorator/checkAuth';
 
+interface Props {
+	auth: boolean;
+}
+
 @checkAuth('willMount')
-export default class Index extends Component {
+@connect((state) => (state.user, state.book), {
+	...actions,
+	dispatchSearch
+})
+export default class Index extends Component<Props, {}> {
 	/**
    * 指定config的类型声明为: Taro.Config
    *
@@ -21,17 +29,9 @@ export default class Index extends Component {
 		navigationBarTitleText: '首页'
 	};
 	state = {
-		title: '',
-		list: [],
-		isOpened: false
+		title: ''
 	};
-	componentWillMount() {
-		if (!getGlobalData('isAuth')) {
-			this.setState({
-				isOpened: true
-			});
-		}
-	}
+	componentWillMount() {}
 
 	componentDidMount() {}
 
@@ -47,15 +47,15 @@ export default class Index extends Component {
 	}
 	async startSearch() {
 		try {
-			const { title } = this.state;
+			const { title } = this.state,
+				{ dispatchSearch } = this.props;
 			Taro.showLoading({
 				title: '加载中...'
 			});
-			const list = await search(title);
-			Taro.hideLoading();
-			this.setState({
-				list
+			await dispatchSearch({
+				title
 			});
+			Taro.hideLoading();
 		} catch (error) {
 			Taro.hideLoading();
 		}
@@ -64,18 +64,18 @@ export default class Index extends Component {
 		Taro.navigateTo({ url: '/pages/index/chapter?url=' + url });
 	}
 	async getUserinfo(e) {
+		const { userInfo, errMsg } = e.detail,
+			{ dispatchLogin, dispatchAuth } = this.props;
 		try {
-			if (e.detail.errMsg === 'getUserInfo:ok') {
+			if (errMsg === 'getUserInfo:ok') {
 				Taro.showLoading({
 					title: '授权中...'
 				});
-				const userinfo = await authorization(e.detail.userInfo);
-				Taro.hideLoading();
-				setGlobalData('userinfo', userinfo);
-				setGlobalData('isLogin', true);
-				this.setState({
-					isOpened: false
+				await dispatchLogin({
+					userinfo: userInfo
 				});
+				Taro.hideLoading();
+				dispatchAuth(true);
 			} else {
 				Taro.showModal({
 					title: '提示',
@@ -86,7 +86,8 @@ export default class Index extends Component {
 		} catch (error) {}
 	}
 	render() {
-		const { title, list, isOpened } = this.state;
+		const { title } = this.state,
+			{ auth, bookList } = this.props;
 		return (
 			<View className="index">
 				<AtSearchBar
@@ -97,7 +98,7 @@ export default class Index extends Component {
 				/>
 				<ScrollView scrollY className="book-list">
 					<AtList>
-						{list.map((item: any, i) => (
+						{bookList.map((item: any, i) => (
 							<AtListItem
 								key={i}
 								title={item.title}
@@ -107,7 +108,7 @@ export default class Index extends Component {
 						))}
 					</AtList>
 				</ScrollView>
-				<AtModal isOpened={isOpened}>
+				<AtModal isOpened={!auth}>
 					<AtModalHeader>ReadLess</AtModalHeader>
 					<AtModalContent>
 						<View className="at-article">
