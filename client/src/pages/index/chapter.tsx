@@ -6,12 +6,19 @@ import { connect } from '@tarojs/redux';
 import * as actions from '../../actions/book';
 import { dispatchRecordLog } from '../../actions/user';
 import './chapter.scss';
+import { IBook } from '../../interfaces/book';
 
+interface IProps {
+	book: IBook;
+	dispatchRecentUpdate;
+	dispatchRecordLog;
+	dispatchAllChapter;
+}
 @connect((state) => state.book, {
 	...actions,
 	dispatchRecordLog
 })
-export default class Chapter extends Component {
+export default class Chapter extends Component<IProps, {}> {
 	config: Config = {
 		navigationBarTitleText: '章节目录'
 	};
@@ -49,7 +56,8 @@ export default class Chapter extends Component {
 	}
 	async handleClick(value) {
 		const { bookUrl } = this.state,
-			{ allChapter, dispatchAllChapter } = this.props;
+			{ book, dispatchAllChapter } = this.props,
+			{ allChapter } = book;
 		if (value === 1 && allChapter.length === 0) {
 			try {
 				Taro.showLoading({
@@ -70,7 +78,8 @@ export default class Chapter extends Component {
 	render() {
 		const { current } = this.state,
 			tabList = [ { title: '最新章节' }, { title: '全部章节' } ],
-			{ recentChapter, allChapter } = this.props,
+			{ book } = this.props,
+			{ recentChapter, allChapter } = book,
 			list = [ recentChapter, allChapter ];
 		return (
 			<View className="chapter">

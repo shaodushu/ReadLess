@@ -10,6 +10,10 @@ import checkAuth from '../../decorator/checkAuth';
 
 interface Props {
 	auth: boolean;
+	bookList: any[];
+	dispatchSearch;
+	dispatchLogin;
+	dispatchAuth;
 }
 
 @checkAuth('willMount')

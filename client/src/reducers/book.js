@@ -6,11 +6,12 @@ import {
 } from '../constants/book'
 
 const INITIAL_STATE = {
-  recentChapter: [],
-  allChapter: [],
+
   book: {
     url: '',
     title: '',
+    recentChapter: [],
+    allChapter: [],
     content: []
   },
   bookList: []
@@ -22,14 +23,20 @@ export default function book(state = INITIAL_STATE, action) {
       {
         return {
           ...state,
-          recentChapter: action.payload
+          book: {
+            ...state.book,
+            recentChapter: action.payload
+          }
         }
       }
     case BOOK_ALL_CHAPTER:
       {
         return {
           ...state,
-          allChapter: action.payload
+          book: {
+            ...state.book,
+            allChapter: action.payload
+          }
         }
       }
     case BOOK_DETAIL:
@@ -40,12 +47,18 @@ export default function book(state = INITIAL_STATE, action) {
           content
         } = action.payload
         title = title.split(' ')
+        if (content.length <= 0) {
+          content = state.book.content
+        } else {
+          content = state.book.content.slice(Math.floor(state.book.content.length / 2)).concat(content)
+        }
         return {
           ...state,
           book: {
+            ...state.book,
             url,
             title: title[title.length - 1],
-            content: state.book.content.concat(content)
+            content
           }
         }
       }

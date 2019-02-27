@@ -4,14 +4,19 @@ import { connect } from '@tarojs/redux';
 
 import * as actions from '../../actions/book';
 import { dispatchRecordLog } from '../../actions/user';
-
+import { IBook } from '../../interfaces/book';
 import './detail.scss';
 interface IState {}
+interface IProps {
+	book: IBook;
+	dispatchDetail;
+	dispatchRecordLog;
+}
 @connect((state) => state.book, {
 	...actions,
 	dispatchRecordLog
 })
-export default class Detail extends Component<{}, IState> {
+export default class Detail extends Component<IProps, IState> {
 	config: Config = {
 		navigationBarTitleText: '详情'
 	};
@@ -42,7 +47,7 @@ export default class Detail extends Component<{}, IState> {
 		//TODO 翻页简单处理，只针对全部章节,暂时不能获取小说章节标题,暂时不能解决页面文字过多
 		let page,
 			result,
-			{ book, dispatchDetail,dispatchRecordLog } = this.props,
+			{ book, dispatchDetail, dispatchRecordLog } = this.props,
 			{ url } = book;
 		if (url) {
 			page = url.match('[^/]+(?!.*/)')[0].split('.')[0];

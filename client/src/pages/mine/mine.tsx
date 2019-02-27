@@ -5,9 +5,14 @@ import { connect } from '@tarojs/redux';
 
 import './mine.scss';
 import * as actions from '../../actions/user';
+import { IUser } from '../../interfaces/user';
 
+interface IProps {
+	userInfo: IUser;
+	dispatchUserInfo;
+}
 @connect((state) => state.user, actions)
-export default class Mine extends Component {
+export default class Mine extends Component<IProps, {}> {
 	config: Config = {
 		navigationBarTitleText: '记录',
 		enablePullDownRefresh: true,
@@ -16,14 +21,7 @@ export default class Mine extends Component {
 		backgroundColor: '#333333',
 		backgroundTextStyle: 'light'
 	};
-	state = {
-		// userinfo: {
-		// 	avatarUrl: 'https://jdc.jd.com/img/200',
-		// 	nickName: 'RD',
-		// 	city: 'Chengdu',
-		// 	readLog: []
-		// }
-	};
+	state = {};
 	componentDidShow() {}
 	onPullDownRefresh() {
 		const { dispatchUserInfo } = this.props;
